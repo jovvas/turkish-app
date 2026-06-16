@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="62%">
+      <stop offset="0%" stop-color="#fdf6ec"/>
+      <stop offset="100%" stop-color="#f6e7d3"/>
+    </radialGradient>
+    <radialGradient id="outer" cx="50%" cy="44%" r="55%">
+      <stop offset="0%" stop-color="#2a7fd4"/>
+      <stop offset="70%" stop-color="#1565b8"/>
+      <stop offset="100%" stop-color="#0d4a8f"/>
+    </radialGradient>
+    <radialGradient id="iris" cx="50%" cy="44%" r="55%">
+      <stop offset="0%" stop-color="#3aa0e6"/>
+      <stop offset="100%" stop-color="#0f57a3"/>
+    </radialGradient>
+  </defs>
+
+  <!-- rounded app-icon background -->
+  <rect width="512" height="512" rx="0" fill="url(#bg)"/>
+
+  <!-- nazar bead: concentric circles -->
+  <g>
+    <circle cx="256" cy="256" r="170" fill="url(#outer)"/>
+    <circle cx="256" cy="256" r="170" fill="none" stroke="#0a3c75" stroke-width="6"/>
+    <circle cx="256" cy="256" r="120" fill="#ffffff"/>
+    <circle cx="256" cy="256" r="78" fill="url(#iris)"/>
+    <circle cx="256" cy="256" r="40" fill="#0a2a52"/>
+    <!-- highlight glints -->
+    <circle cx="226" cy="222" r="16" fill="#ffffff" opacity="0.92"/>
+    <circle cx="288" cy="296" r="8"  fill="#ffffff" opacity="0.55"/>
+  </g>
+</svg>
