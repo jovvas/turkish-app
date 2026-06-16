@@ -5,17 +5,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        brand: {
-          DEFAULT: "#d62828", // Turkish red
-          dark: "#a61c1c",
-        },
-        nazar: {
-          DEFAULT: "#1565b8", // evil-eye blue accent
-          light: "#3a8fdb",
-        },
-        paper: "#faf4ea", // warm cream background
-        sand: "#f1e6d4", // soft card / divider tone
-        ink: "#2b2118", // warm near-black text
+        brand: { DEFAULT: "#d62828", dark: "#a61c1c" },
+        nazar: { DEFAULT: "#1565b8", light: "#3a8fdb" },
+        paper: "#faf4ea",
+        sand: "#f1e6d4",
+        ink: "#2b2118",
       },
       fontFamily: {
         display: ["Georgia", "ui-serif", "serif"],

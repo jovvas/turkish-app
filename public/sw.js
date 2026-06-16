@@ -25,7 +25,6 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   const { request } = event;
-  // Only handle GET navigations with a network-first, cache fallback strategy.
   if (request.method !== "GET") return;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return; // let Supabase calls pass through
