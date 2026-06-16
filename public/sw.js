@@ -2,8 +2,10 @@
 // and provides a basic app-shell cache. PDF data and annotations come from
 // Supabase over the network and are intentionally not cached here.
 
-const CACHE = "turkce-shell-v1";
-const SHELL = ["/", "/dictionary", "/manifest.json"];
+// Bump this version on every deploy that changes the app shell so phones
+// drop the old cached copy and pull the new one (see the "activate" handler).
+const CACHE = "turkce-shell-v2";
+const SHELL = ["/manifest.json"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
