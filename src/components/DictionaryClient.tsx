@@ -17,6 +17,7 @@ export default function DictionaryClient({
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "learning" | "learned">("all");
   const [showAdd, setShowAdd] = useState(false);
+  const [editing, setEditing] = useState<DictionaryEntry | null>(null);
 
   async function refresh() {
     const { data } = await supabase
@@ -124,38 +125,61 @@ export default function DictionaryClient({
               >
                 ✓
               </button>
-              <div className="min-w-0 flex-1">
+              <button
+                onClick={() => setEditing(e)}
+                className="min-w-0 flex-1 text-left"
+              >
                 <div className="flex items-baseline gap-2">
                   <span className="font-semibold">{e.turkish}</span>
-                  <span className="text-zinc-500">— {e.meaning}</span>
+                  <span className="text-ink/60">— {e.meaning}</span>
                 </div>
-                {e.example && (
-                  <p className="mt-0.5 text-sm italic text-zinc-500">{e.example}</p>
-                )}
-                {e.notes && <p className="mt-0.5 text-sm text-zinc-600">{e.notes}</p>}
-                {e.page && (
-                  <p className="mt-0.5 text-xs text-zinc-400">p. {e.page}</p>
-                )}
-              </div>
-              <button
-                onClick={() => remove(e)}
-                className="shrink-0 text-zinc-300 hover:text-brand"
-                aria-label="Delete"
-              >
-                🗑
+                {e.example ? (
+                  <p className="mt-0.5 text-sm italic text-ink/50">{e.example}</p>
+                ) : null}
+                {e.notes ? (
+                  <p className="mt-0.5 text-sm text-ink/70">{e.notes}</p>
+                ) : null}
+                {e.page ? (
+                  <p className="mt-0.5 text-xs text-ink/40">p. {e.page}</p>
+                ) : null}
               </button>
+              <div className="flex shrink-0 flex-col items-center gap-2">
+                <button
+                  onClick={() => setEditing(e)}
+                  className="text-ink/30 hover:text-nazar"
+                  aria-label="Edit"
+                >
+                  ✎
+                </button>
+                <button
+                  onClick={() => remove(e)}
+                  className="text-ink/30 hover:text-brand"
+                  aria-label="Delete"
+                >
+                  🗑
+                </button>
+              </div>
             </li>
           ))}
         </ul>
       )}
 
-      {showAdd && (
+      {showAdd ? (
         <AddWordModal
           books={books}
           onClose={() => setShowAdd(false)}
           onSaved={refresh}
         />
-      )}
+      ) : null}
+
+      {editing ? (
+        <AddWordModal
+          books={books}
+          entry={editing}
+          onClose={() => setEditing(null)}
+          onSaved={refresh}
+        />
+      ) : null}
     </>
   );
 }
