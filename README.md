@@ -4,6 +4,7 @@ A personal, installable web app (PWA) for learning Turkish on your iPhone.
 
 - **Module 1 — Reader:** open your PDF coursebooks, page through them, and annotate with **highlighter / pen / text / eraser**. Every mark is saved per page to your account, so your notes follow you across devices.
 - **Module 2 — Dictionary:** a personal word list you build over time (Turkish, meaning, example, notes, source page). Add words straight from the reader with the **"+ Word"** button. Search, filter, and mark words as learned.
+- **Module 3 — Grammar:** a personal grammar reference you grow as you study. Each topic has a title, an explanation in your own words, a list of example sentences (Turkish + meaning), and the source book/page. Tap a topic to expand it; search across titles, notes, and examples.
 
 Stack: **Next.js** (on Vercel) + **Supabase** (auth, database, file storage).
 
@@ -23,7 +24,8 @@ You do **not** need your Claude API key for this version — these two modules d
 ## Step 1 — Create the Supabase project
 
 1. In Supabase, click **New project**. Pick a name and a strong database password.
-2. When it's ready, open **SQL Editor → New query**, paste the entire contents of `supabase/schema.sql`, and click **Run**. This creates the `books`, `annotations`, and `dictionary` tables with the right security rules.
+2. When it's ready, open **SQL Editor → New query**, paste the entire contents of `supabase/schema.sql`, and click **Run**. This creates the `books`, `annotations`, `dictionary`, and `grammar` tables with the right security rules.
+   - **Already have the database from v1/v2?** Don't re-run `schema.sql`. Instead run `supabase/v3-grammar.sql` once — it only adds the new `grammar` table and leaves everything else untouched.
 3. Go to **Storage → New bucket**. Name it exactly **`books`** and turn **Public bucket ON**. (The coursebooks aren't sensitive; your notes & dictionary stay private regardless.)
 4. Go to **Project Settings → API** and copy these two values for later:
    - **Project URL** # https://mqfojvawbffkowsoltii.supabase.co

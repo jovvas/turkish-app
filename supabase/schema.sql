@@ -87,6 +87,27 @@ create policy "owner manages bookmarks" on public.bookmarks
 create index if not exists bookmarks_lookup
   on public.bookmarks (user_id, book_id, page);
 
+-- ---------- GRAMMAR (topics you collect while studying) --------------
+create table if not exists public.grammar (
+  id          uuid primary key default gen_random_uuid(),
+  user_id     uuid not null default '00000000-0000-0000-0000-000000000001',
+  title       text not null,
+  explanation text,
+  examples    jsonb not null default '[]'::jsonb,  -- [{ "tr": "...", "meaning": "..." }]
+  book_id     uuid references public.books(id) on delete set null,
+  page        int,
+  sort_order  int default 0,
+  created_at  timestamptz default now()
+);
+
+alter table public.grammar enable row level security;
+drop policy if exists "owner manages grammar" on public.grammar;
+create policy "owner manages grammar" on public.grammar
+  for all to anon, authenticated using (true) with check (true);
+
+create index if not exists grammar_user_idx
+  on public.grammar (user_id, created_at desc);
+
 -- ---------- READING STATE ("continue where I left off") --------------
 create table if not exists public.reading_state (
   user_id    uuid not null default '00000000-0000-0000-0000-000000000001',

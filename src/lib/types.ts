@@ -44,6 +44,22 @@ export type ReadingState = {
   last_page: number;
 };
 
+export type GrammarExample = {
+  tr: string; // Turkish example sentence
+  meaning: string; // its meaning (Serbian/English)
+};
+
+export type GrammarTopic = {
+  id: string;
+  title: string;
+  explanation: string | null;
+  examples: GrammarExample[];
+  book_id: string | null;
+  page: number | null;
+  sort_order: number | null;
+  created_at: string;
+};
+
 export type DictionaryEntry = {
   id: string;
   turkish: string;
