@@ -7,6 +7,7 @@ import { OWNER_ID } from "@/lib/owner";
 import type { Bookmark, PageAnnotation, Stroke, TextNote } from "@/lib/types";
 import NavSheet from "@/components/NavSheet";
 import DictionarySheet from "@/components/DictionarySheet";
+import GrammarSheet from "@/components/GrammarSheet";
 
 type Tool = "pan" | "select" | "pen" | "highlighter" | "text" | "eraser";
 
@@ -63,6 +64,7 @@ export default function PdfReader({
   const [bookmarks, setBookmarks] = useState<Bookmark[]>(initialBookmarks);
   const [showNav, setShowNav] = useState(false);
   const [showDict, setShowDict] = useState(false);
+  const [showGrammar, setShowGrammar] = useState(false);
 
   const isBookmarked = bookmarks.some((b) => b.page === page);
 
@@ -501,6 +503,13 @@ export default function PdfReader({
         >
           📖
         </button>
+        <button
+          onClick={() => setShowGrammar(true)}
+          className="flex h-10 w-9 items-center justify-center text-lg"
+          aria-label="Grammar"
+        >
+          📝
+        </button>
       </header>
 
       {/* canvas scroll area */}
@@ -656,6 +665,14 @@ export default function PdfReader({
       <DictionarySheet
         open={showDict}
         onClose={() => setShowDict(false)}
+        books={books}
+        bookId={bookId}
+        page={page}
+      />
+
+      <GrammarSheet
+        open={showGrammar}
+        onClose={() => setShowGrammar(false)}
         books={books}
         bookId={bookId}
         page={page}
