@@ -5,8 +5,9 @@ A personal, installable web app (PWA) for learning Turkish on your iPhone.
 - **Module 1 — Reader:** open your PDF coursebooks, page through them, and annotate with **highlighter / pen / text / eraser**. Every mark is saved per page to your account, so your notes follow you across devices.
 - **Module 2 — Dictionary:** a personal word list you build over time (Turkish, meaning, example, notes, source page). Add words straight from the reader with the **"+ Word"** button. Search, filter, and mark words as learned.
 - **Module 3 — Grammar:** a personal grammar reference you grow as you study. Each topic has a title, an explanation in your own words, a list of example sentences (Turkish + meaning), and the source book/page. Tap a topic to expand it; search across titles, notes, and examples. You can also save a topic straight from the reader with the **📝** button — it pre-fills the current book and page.
+- **Module 4 — Tutor (AI chat):** a conversational Turkish assistant. Ask grammar and vocabulary questions, practice a simple conversation, get sentences translated and broken down word-by-word, or ask to be quizzed. It explains in English by default but follows you into Serbian or Turkish. Chats are not saved (each visit starts fresh). Right inside the chat, the **📖** and **📝** buttons let you search or add a word or grammar topic without leaving the conversation.
 
-Stack: **Next.js** (on Vercel) + **Supabase** (auth, database, file storage).
+Stack: **Next.js** (on Vercel) + **Supabase** (auth, database, file storage) + **Claude** (the AI tutor and the dictionary's "Fill with AI").
 
 ---
 
@@ -17,7 +18,7 @@ Stack: **Next.js** (on Vercel) + **Supabase** (auth, database, file storage).
 - A **Vercel** account — https://vercel.com
 - **Node.js 18+** installed locally (only needed once, to upload the books)
 
-You do **not** need your Claude API key for this version — these two modules don't use AI. We can add AI features (conversation practice, auto-generated exercises) in a later module.
+The AI features (Module 4 Tutor + the dictionary's "Fill with AI") use your own **Claude API key**. Add `ANTHROPIC_API_KEY` in `.env.local` for local dev and in **Vercel → Project → Settings → Environment Variables** for the live app. Get a key at https://console.anthropic.com → API Keys. The Reader, Dictionary, and Grammar modules work fine without it.
 
 ---
 

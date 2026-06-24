@@ -7,6 +7,7 @@ const items = [
   { href: "/", label: "Library", icon: "📚" },
   { href: "/dictionary", label: "Dictionary", icon: "📖" },
   { href: "/grammar", label: "Grammar", icon: "📝" },
+  { href: "/chat", label: "Tutor", icon: "💬" },
 ];
 
 export default function BottomNav() {

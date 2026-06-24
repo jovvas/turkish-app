@@ -4,7 +4,7 @@
 
 // Bump this version on every deploy that changes the app shell so phones
 // drop the old cached copy and pull the new one (see the "activate" handler).
-const CACHE = "turkce-shell-v4";
+const CACHE = "turkce-shell-v5";
 const SHELL = ["/manifest.json"];
 
 self.addEventListener("install", (event) => {

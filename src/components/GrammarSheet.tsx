@@ -15,8 +15,8 @@ export default function GrammarSheet({
   open: boolean;
   onClose: () => void;
   books: { id: string; slug: string; title: string }[];
-  bookId: string;
-  page: number;
+  bookId?: string;
+  page?: number;
 }) {
   const supabase = createClient();
   const [topics, setTopics] = useState<GrammarTopic[]>([]);
