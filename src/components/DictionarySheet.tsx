@@ -23,6 +23,7 @@ export default function DictionarySheet({
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [showAdd, setShowAdd] = useState(false);
+  const [editing, setEditing] = useState<DictionaryEntry | null>(null);
 
   async function load() {
     setLoading(true);
@@ -95,27 +96,27 @@ export default function DictionarySheet({
           ) : (
             <ul className="space-y-1.5">
               {filtered.map((e) => (
-                <li
-                  key={e.id}
-                  className="rounded-xl bg-white p-3 shadow-card"
-                >
-                  <div className="flex items-baseline gap-2">
-                    <span className="font-semibold">{e.turkish}</span>
-                    <span className="text-ink/60">— {e.meaning}</span>
-                    {e.learned && (
-                      <span className="ml-auto text-xs text-green-600">
-                        learned
+                <li key={e.id}>
+                  <button
+                    onClick={() => setEditing(e)}
+                    className="w-full rounded-xl bg-white p-3 text-left shadow-card transition active:scale-[0.99]"
+                  >
+                    <div className="flex items-baseline gap-2">
+                      <span className="font-semibold">{e.turkish}</span>
+                      <span className="text-ink/60">— {e.meaning}</span>
+                      <span className="ml-auto shrink-0 text-xs text-ink/30">
+                        edit ✎
                       </span>
+                    </div>
+                    {e.example && (
+                      <p className="mt-0.5 text-sm italic text-ink/50">
+                        {e.example}
+                      </p>
                     )}
-                  </div>
-                  {e.example && (
-                    <p className="mt-0.5 text-sm italic text-ink/50">
-                      {e.example}
-                    </p>
-                  )}
-                  {e.notes && (
-                    <p className="mt-0.5 text-sm text-ink/70">{e.notes}</p>
-                  )}
+                    {e.notes && (
+                      <p className="mt-0.5 text-sm text-ink/70">{e.notes}</p>
+                    )}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -129,6 +130,15 @@ export default function DictionarySheet({
           defaultBookId={bookId}
           defaultPage={page}
           onClose={() => setShowAdd(false)}
+          onSaved={load}
+        />
+      )}
+
+      {editing && (
+        <AddWordModal
+          books={books}
+          entry={editing}
+          onClose={() => setEditing(null)}
           onSaved={load}
         />
       )}
