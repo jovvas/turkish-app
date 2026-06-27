@@ -8,6 +8,7 @@ import type { Bookmark, PageAnnotation, Stroke, TextNote } from "@/lib/types";
 import NavSheet from "@/components/NavSheet";
 import DictionarySheet from "@/components/DictionarySheet";
 import GrammarSheet from "@/components/GrammarSheet";
+import ChatSheet from "@/components/ChatSheet";
 
 type Tool = "pan" | "select" | "pen" | "highlighter" | "text" | "eraser";
 
@@ -65,6 +66,7 @@ export default function PdfReader({
   const [showNav, setShowNav] = useState(false);
   const [showDict, setShowDict] = useState(false);
   const [showGrammar, setShowGrammar] = useState(false);
+  const [showTutor, setShowTutor] = useState(false);
 
   const isBookmarked = bookmarks.some((b) => b.page === page);
 
@@ -510,6 +512,13 @@ export default function PdfReader({
         >
           📝
         </button>
+        <button
+          onClick={() => setShowTutor(true)}
+          className="flex h-10 w-9 items-center justify-center text-lg"
+          aria-label="Ask the tutor"
+        >
+          💬
+        </button>
       </header>
 
       {/* canvas scroll area */}
@@ -677,6 +686,8 @@ export default function PdfReader({
         bookId={bookId}
         page={page}
       />
+
+      <ChatSheet open={showTutor} onClose={() => setShowTutor(false)} />
     </main>
   );
 }
