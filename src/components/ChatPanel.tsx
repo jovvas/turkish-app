@@ -6,9 +6,16 @@ import {
   useImperativeHandle,
   useRef,
   useState,
+  useSyncExternalStore,
 } from "react";
-
-type Msg = { role: "user" | "assistant"; content: string };
+import {
+  clearChat,
+  getServerSnapshot,
+  getSnapshot,
+  setChat,
+  subscribe,
+  type ChatMsg as Msg,
+} from "@/lib/chatStore";
 
 export type ChatPanelHandle = {
   newChat: () => void;
@@ -26,7 +33,11 @@ const SUGGESTIONS = [
 // flex children of a column, so it works both as a full page (Tutor tab) and
 // inside a bottom sheet (from the reader). The host controls "new chat" via ref.
 const ChatPanel = forwardRef<ChatPanelHandle, {}>(function ChatPanel(_props, ref) {
-  const [messages, setMessages] = useState<Msg[]>([]);
+  const messages = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,7 +54,7 @@ const ChatPanel = forwardRef<ChatPanelHandle, {}>(function ChatPanel(_props, ref
       !confirm("Start a new chat? This clears the conversation.")
     )
       return;
-    setMessages([]);
+    clearChat();
     setError(null);
     setInput("");
   }
@@ -60,7 +71,7 @@ const ChatPanel = forwardRef<ChatPanelHandle, {}>(function ChatPanel(_props, ref
     if (!content || streaming) return;
 
     const next: Msg[] = [...messages, { role: "user", content }];
-    setMessages([...next, { role: "assistant", content: "" }]);
+    setChat([...next, { role: "assistant", content: "" }]);
     setInput("");
     setStreaming(true);
     setError(null);
@@ -84,14 +95,14 @@ const ChatPanel = forwardRef<ChatPanelHandle, {}>(function ChatPanel(_props, ref
         const { done, value } = await reader.read();
         if (done) break;
         acc += decoder.decode(value, { stream: true });
-        setMessages((m) => {
+        setChat((m) => {
           const copy = m.slice();
           copy[copy.length - 1] = { role: "assistant", content: acc };
           return copy;
         });
       }
       if (!acc.trim()) {
-        setMessages((m) => {
+        setChat((m) => {
           const copy = m.slice();
           copy[copy.length - 1] = {
             role: "assistant",
@@ -102,7 +113,7 @@ const ChatPanel = forwardRef<ChatPanelHandle, {}>(function ChatPanel(_props, ref
       }
     } catch (e: any) {
       setError(e?.message ?? "Something went wrong.");
-      setMessages((m) => {
+      setChat((m) => {
         const copy = m.slice();
         if (
           copy.length &&
