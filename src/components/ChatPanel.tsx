@@ -12,6 +12,7 @@ import {
   clearChat,
   getServerSnapshot,
   getSnapshot,
+  refresh,
   setChat,
   subscribe,
   type ChatMsg as Msg,
@@ -42,10 +43,28 @@ const ChatPanel = forwardRef<ChatPanelHandle, {}>(function ChatPanel(_props, ref
   const [streaming, setStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const streamingRef = useRef(false);
+  streamingRef.current = streaming;
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, streaming]);
+
+  // When the app/tab regains focus, pull the latest in case the conversation
+  // was continued on another device. Skip while we're mid-stream here.
+  useEffect(() => {
+    const onVisible = () => {
+      if (document.visibilityState === "visible" && !streamingRef.current) {
+        void refresh();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", onVisible);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", onVisible);
+    };
+  }, []);
 
   function newChat() {
     if (streaming) return;

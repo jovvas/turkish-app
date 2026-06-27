@@ -122,6 +122,18 @@ drop policy if exists "owner manages reading state" on public.reading_state;
 create policy "owner manages reading state" on public.reading_state
   for all to anon, authenticated using (true) with check (true);
 
+-- ---------- CHAT STATE (the Tutor conversation, synced) --------------
+create table if not exists public.chat_state (
+  user_id    uuid primary key default '00000000-0000-0000-0000-000000000001',
+  messages   jsonb not null default '[]'::jsonb,  -- [{ "role": "...", "content": "..." }]
+  updated_at timestamptz default now()
+);
+
+alter table public.chat_state enable row level security;
+drop policy if exists "owner manages chat state" on public.chat_state;
+create policy "owner manages chat state" on public.chat_state
+  for all to anon, authenticated using (true) with check (true);
+
 -- ---------- keep updated_at fresh on annotations ---------------------
 create or replace function public.touch_updated_at()
 returns trigger language plpgsql as $$
